@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoVis Tutorial</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥨</text></svg>">
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <style>
+    p.large-paragraph {
+      font-size: 2em;
+    }
+
+    #first-paragraph {
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+
+    img {
+      width: 100%
+    }
+  </style>
+</head>
+<body>
+  <h1>Breaking News</h1>
+  <h2>A new technical university is coming to Linz!</h2>
+  <p id="first-paragraph" class="large-paragraph">As announced last year, Upper Austria will get a technical university. This whill be Austria's forth technical university.
+  The others are:
+  </p>
+
+  <div class="grid">
+    <p>TU Wien</p>
+    <p>TU Graz</p>
+    <p>Montanuni Leoben</p>
+    <img src="TU_Wien.jpg">
+    <img src="TU_Graz.jpg">
+    <img src="Montanuni_Leoben.jpg">
+  </div>
+
+  <div>
+    <p class="large-paragraph">The university will be in Linz. Somewhere here:</p>
+    <img src="Linz.jpg">
+    <a href="https://de.wikipedia.org/wiki/Benutzer:Koppi2">Koppi2</a>, <a href="https://de.wikipedia.org/wiki/Datei:Linz_Luft_C.jpg">Linz Luft C</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/de/legalcode" rel="license">CC BY-SA 3.0 DE</a> 
+  </div>
+
+  <hr>
+
+  <p>Random Number: <span id="randnum"></span>.</p>
+
+  <button>new random number</button>
+
+
+  <div id="vis"></div>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.21.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.20.2"></script>
+  <script>
+    console.log('Hello World!')
+  
+    document.querySelector('button').onclick = () => {
+      const randNumSpan = document.querySelector('#randnum')
+      let randNum = parseInt(Math.random()*100);
+      randNumSpan.textContent = randNum;
+    }
+
+    const vlSpec = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        data: {
+          values: [
+            {a: 'C', b: 2},
+            {a: 'C', b: 7},
+            {a: 'C', b: 4},
+            {a: 'D', b: 1},
+            {a: 'D', b: 2},
+            {a: 'D', b: 6},
+            {a: 'E', b: 8},
+            {a: 'E', b: 4},
+            {a: 'E', b: 7}
+          ]
+        },
+        mark: 'bar',
+        encoding: {
+          y: {field: 'a', type: 'nominal'},
+          x: {
+            aggregate: 'average',
+            field: 'b',
+            type: 'quantitative',
+            axis: {
+              title: 'Average of b'
+            }
+          }
+        }
+      };
+
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed('#vis', vlSpec);
+    
+  </script>
+</body>
+</html>

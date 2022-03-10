@@ -1,0 +1,23 @@
+{     
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  data: {url: "tu.json"},
+  transform: [{
+    sort: [{field: "founded"}],
+    window: [{op: "count", field: "count", as: "Cumulative Count"}],
+    frame: [null, 0]
+  }],
+  mark: {type: "line", interpolate: 'step-after'},
+  encoding: {
+    x: {
+      field: "founded",
+      type: "quantitative",
+      axis: {
+        format: "d"
+      }
+    },
+    y: {
+      field: "Cumulative Count",
+      type: "quantitative"
+    }
+  }
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big News!</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.21.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.20.2"></script>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍💻</text></svg>">
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <style>
+    :root {
+      margin: 1em;
+    }
+
+    #universities {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 1em;
+    }
+
+    #universities img {
+      width: 100%;
+    }
+
+    svg circle {
+      background-color: linear-gradient(to right, transparent 50%, #655 0);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>breaking news</h1>
+  <h2>Linz is going to get a Technical University next year!</h2>
+  <p class="first" id="foobar">As announced last year, Upper Austria will get a technical university.
+    This will be Austria's forth technical university. The others are:
+  </p>
+
+  <div id="universities">
+    <h2>TU Wien</h2>
+    <h2>TU Graz</h2>
+    <h2>University of Leoben</h2>
+
+    <img src="TU_Bibl_01_DSC1099w.jpg">
+    <img src="TU_Graz_2.jpg">
+    <img src="Montanuni1.jpg">
+
+    <p> Peter Haas /&nbsp;<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:TU_Bibl_01_DSC1099w.jpg">TU Bibl 01 DSC1099w</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/at/deed.en" rel="license">CC BY-SA 3.0 AT</a> </p>
+    <p></p>
+    <p><a href="https://commons.wikimedia.org/wiki/File:Montanuni1.jpg">Montanuni1</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/legalcode" rel="license">CC BY-SA 3.0</a> 
+    </p>
+  </div>
+  
+  <p>Many potential locations were discussed. Now the decision was made for Linz.</p>
+  <div>
+    <p>Its going to be somewhere here (likely):</p>
+
+    <img src="Linz_Luft_C.jpg"/>
+    <a href="https://de.wikipedia.org/wiki/Benutzer:Koppi2">Koppi2</a>, <a href="https://de.wikipedia.org/wiki/Datei:Linz_Luft_C.jpg">Linz Luft C</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/de/legalcode" rel="license">CC BY-SA 3.0 DE</a> 
+  </div>
+
+  <h2>Development of universities</h2>
+  <div id="chart"></div>
+
+  <hr>
+
+  <p>Random Number: <span id="randnum"></span></p>
+  <button>Generate</button>
+
+  <hr>
+
+  <svg viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="10" fill="white"/>
+  </svg>
+
+  <script>
+    console.log('hello world')
+    const chart = document.querySelector('#chart');
+    chart.textContent = "I'm going to be a chart";
+
+    var vlSpec = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: {url: "tu.json"},
+      transform: [{
+        sort: [{field: "founded"}],
+        window: [{op: "count", field: "count", as: "Cumulative Count"}],
+        frame: [null, 0]
+      }],
+      mark: {type: "line", interpolate: 'step-after'},
+      encoding: {
+        x: {
+          field: "founded",
+          type: "quantitative",
+          axis: {
+            format: "d"
+          }
+        },
+        y: {
+          field: "Cumulative Count",
+          type: "quantitative"
+        }
+      }
+    };
+
+    // Embed the visualization in the container with id `vis`
+    vegaEmbed('#chart', vlSpec);
+
+    document.querySelector('button').onclick = () => {
+      const rnd = parseInt(Math.random()*100)
+      document.querySelector('#randnum').textContent = rnd;
+    };
+
+  </script>
+</body>
+</html>
